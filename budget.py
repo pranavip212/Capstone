@@ -1,6 +1,5 @@
 from estimated_costs import CostEstimator
 from user_profile import UserProfile
-from budget import BudgetGenerator
 
 class BudgetGenerator:
     #money allocation based on user profile/preference
@@ -44,42 +43,48 @@ class BudgetGenerator:
         disposable = yearly_income - yearly_expenses
 
         #allocation
-        profile = BudgetGenerator.SPENDING_PROFILES[
-            user.spending_style
-        ]
+        profile = BudgetGenerator.SPENDING_PROFILES[user.spending_style]
 
-        savings = disposable * profile["savings"]
-        leisure = disposable * profile["leisure"]
-        emergency = disposable * profile["emergency"]
+        if disposable > 0:
+            savings = disposable * profile["savings"]
+            leisure = disposable * profile["leisure"]
+            emergency = disposable * profile["emergency"]
+        else:
+            savings = 0
+            leisure = 0
+            emergency = 0
+
+        net_position = total_available_funds - yearly_expenses
+
+        available_with_loan = total_available_funds + osap["loan"]
+
+        net_position_with_loan = available_with_loan - yearly_expenses
+
 
         return {
             #user factors
-            "Employment:": user.monthly_income * 12,
-            "Monthly family support:": user.monthly_family_support,
-            "Scholarship amount:": user.scholarship_amount,
-            "OSAP grant:" : osap["grant"],
-            "OSAP loan": osap['loan'],
+            "employment_income": user.monthly_income * 12,
+            "family_support": user.monthly_family_support,
+            "scholarship_amount": user.scholarship_amount,
+            "osap_grant" : osap["grant"],
+            "osap_loan": osap['loan'],
 
-            "Total funds (INCOME + SAVINGS):": total_available_funds,
-            "Yearly income": budget["yearly_income"],
-
-
-            "SAVINGS:": user.current_savings,
+            "yearly_income": yearly_income,
+            "current_savings": user.current_savings,
+            "total_available_funds": total_available_funds,
+            "available_with_loan": available_with_loan,
 
             #all the expenses
             "tuition": scenario.tuition,
             "housing": housing,
             "food": food,
             "transportation": transport,
-            "expenses": yearly_expenses,
+            "yearly_expenses": yearly_expenses,
 
             #budget
             "disposable":  disposable,
-
             "savings": savings,
-
             "leisure": leisure,
-
             "emergency": emergency,
 
             # monthly numbers
@@ -90,7 +95,9 @@ class BudgetGenerator:
             "monthly_leisure": (disposable * profile["leisure"]) / 12,
             "monthly_emergency": (disposable * profile["emergency"]) / 12,
 
-            #monthly numbers
+            "net_position": net_position,
+            "net_position_with_loan": net_position_with_loan
+
 
 
         }

@@ -19,9 +19,6 @@ def main():
 
     )
 
-    # -------------------------
-    # CREATE SCENARIO
-    # -------------------------
     scenario = UniversityExpenses(
         university_name="Ontario Tech",
         program_name="Mechatronics Engineering",
@@ -33,17 +30,15 @@ def main():
         food_level="medium"
     )
 
-    # -------------------------
-    # GENERATE BUDGET
-    # -------------------------
+
     budget = BudgetGenerator.generate_budget(user, scenario)
 
     # -------------------------
     # OUTPUT
     # -------------------------
     print("\n=== BUDGET REPORT ===")
-    print(f"Income: ${budget['income']}")
-    print(f"Expenses: ${budget['expenses']}")
+    print(f"Income: ${budget['yearly_income']}")
+    #print(f"Expenses: ${budget['yearly_expenses']}")
     print(f"Disposable: ${budget['disposable']}")
     print(f"Savings: ${budget['savings']}")
     print(f"Leisure: ${budget['leisure']}")
