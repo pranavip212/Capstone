@@ -2,7 +2,7 @@ from user_profile import UserProfile
 from university_expenses import UniversityExpenses
 from budget import BudgetGenerator
 
-
+#some generated text code from when the app was text-based.
 def main():
 
     # -------------------------
